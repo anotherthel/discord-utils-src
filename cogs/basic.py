@@ -39,18 +39,32 @@ class Basic(commands.Cog):
         def check(ms):
             return ms.channel == ctx.message.channel and ms.author == ctx.message.author
 
-        
-        await ctx.send('Who will be recipient? (@ mention or @ everyone)')
-        msg=await self.bot.wait_for('message', check=check)
+        if len(ctx.message.content.split()) <= 1:
+            await ctx.send('Missing: `recipient`.\nExample: `@everyone`')
+            return
+        message=ctx.message.content.split()
+        message.pop(0)
+        message=' '.join(message)
         await ctx.send('Content:')
         content=await self.bot.wait_for('message', check=check)
         content=content.content
         msg=await ctx.send('Generating announcement...')
-        message='> __Announcement__\n{}'.format(content)
-        await msg.edit(content=message)
+        response='> __Announcement__ @{}\n{}'.format(message,content)
+        await msg.edit(content=response)
 
-
-
+    @commands.command(
+        name='pin',
+        description='Pin a message.',
+        aliases=[]
+    )
+    async def pin_message(self, ctx):
+        def check(ms):
+            return ms.channel == ctx.message.channel and ms.author == ctx.message.author
+        c=await ctx.send('Awaiting message:')
+        messages=await self.bot.wait_for('message', check=check)
+        await messages.pin()
+        await c.edit(content=messages)
+        await c.add_reaction(emoji='😱') 
 
 def setup(bot):
     bot.add_cog(Basic(bot))
