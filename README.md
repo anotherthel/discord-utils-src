@@ -11,7 +11,7 @@ https://discordapp.com/api/oauth2/authorize?client_id=665674407611727915&permiss
 
 ## Stats
 
-#### Lines: 605 (in counting)
+#### Lines: 622 (in counting)
 #### Cogs: 7 (also in counting)
 #### Functions: ~30 (again, in counting)
 
