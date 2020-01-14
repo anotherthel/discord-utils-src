@@ -1,3 +1,10 @@
+'''
+FYI
+
+This file is effectivly useless, as it is not updated, so it doesn't really help.
+'''
+
+
 from discord.ext import commands 
 import discord
 
