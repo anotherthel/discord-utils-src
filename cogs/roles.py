@@ -29,7 +29,12 @@ class NewRole(commands.Cog):
         aliases=['rs']
     )
     async def view_roles(self, ctx):
-        await ctx.send('```{}```'.format(ctx.guild.roles))
+        empty=''
+        for role in ctx.guild.roles:
+            empty+=role.name
+            empty+='\n'
+        await ctx.send('```{}```'.format(empty))
+
 
     @commands.command(
         name='create_role',
@@ -46,8 +51,11 @@ class NewRole(commands.Cog):
         await msg.edit(content='```Role created.\nName: {}```'.format(addto))
         print(ctx.guild.roles)
 
+
+
     
 
 
 def setup(bot):
     bot.add_cog(NewRole(bot))
+
