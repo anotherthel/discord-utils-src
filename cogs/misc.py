@@ -1,5 +1,5 @@
 from discord.ext import commands
-import discord, csv, random
+import discord, csv, random, asyncio
 
 colors = {
   'DEFAULT': 0x000000,
@@ -69,12 +69,13 @@ class Misc(commands.Cog):
         readed=csv.reader(ff)
         quoted=list(readed)
         r=random.randint(0, 178)
-        embed=discord.Embed(
-            title='[          ]', 
-            description='[          ]', 
-            color=0x000000)
-        embed.add_field(name='Full site here:\nhttp://patorjk.com/misc/chainletters/179waystoannoypeople.htm', value='```{}```'.format(quoted[r]))
-        await ctx.send(embed=embed)
+        sent = await ctx.send('```{}```'.format(quoted[r]))
+        await sent.add_reaction(emoji='👍')
+        await sent.add_reaction(emoji='👎')
+
+
+        
+
 
     @commands.command(
         name='color',
@@ -89,8 +90,82 @@ class Misc(commands.Cog):
             await ctx.send(embed=embed)
         except Exception as e:
             await ctx.send('```{}```'.format(e))
+
+    @commands.command(
+        name='profile',
+        description='Nonems',
+        aliases=['prof']
+    )
+    async def profile_user(self, ctx, member:discord.Member):
+        try:
+            await self.bot.fetch_user(ctx.author.id)
+            embed=discord.Embed(title='{}'.format(member.name), color=0x000000)
+            url=member.avatar_url
+            embed.set_thumbnail(url=url)
+            embed.add_field(name='__Stats__', value='**ID:** {}\n**Discriminator:** #{}\n**Nick:** {}\n**Guild:** '.format(member.id, member.discriminator, member.nick, ctx.guild))
+            await ctx.send(embed=embed)
+        except Exception as e:
+            await ctx.send(f'```{e}```')
+
+    @commands.command(
+        name='set_status',
+        description='Nonems',
+        aliases=['s_s', '$_$']
+    )
+    async def set_status(self, ctx):
+        if ctx.author.id == 640203987437748246:
+            ctx.message.content = ctx.message.content.split()
+            ctx.message.content.pop(0)
+            msg=' '.join(ctx.message.content)
+            game=discord.Game(msg)
+            await self.bot.change_presence(status=discord.Status.idle, activity=game)
+            msg=await ctx.send('Setting status...')
+            await asyncio.sleep(0.75)
+            await msg.edit(content='Status changed to:\nStatus: `discord.Status.online`\nActivity: `{}`'.format(game))
+            await msg.add_reaction(emoji='👍')
+            await msg.add_reaction(emoji='👎')
+        else:
+            await ctx.send('`set_status` is an owner only command.')
+            return
+
+    @commands.command(
+        name='create_channel',
+        description='None',
+        aliases=[]
+    )
+    async def create_channel(self, ctx):
+        if ctx.author.id == 640203987437748246:
+            guild=ctx.message.guild
+            mm=ctx.message.content.split()
+            mm.pop(0)
+            mm=' '.join(mm)
+            await guild.create_text_channel(mm)
+            msg=await ctx.send('Creating channel...')
+            await asyncio.sleep(0.75)
+            await msg.edit(content='Channel created.')
+        else:
+            await ctx.send('`create_channel` is an owner only command.')
+            return
+
+    @commands.command(
+        name='users',
+        description='None',
+        aliases=[]
+    )
+    async def get_users(self, ctx):
+        await ctx.send('Users:')
+        for user in self.bot.users:
+            await ctx.send('{}'.format(user))
+
+
+
+
+
+
+        
         
 
 
 def setup(bot):
     bot.add_cog(Misc(bot))
+        
