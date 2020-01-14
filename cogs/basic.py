@@ -1,5 +1,5 @@
 from discord.ext import commands
-import time, discord
+import time, discord, datetime
 
 
 pingtimes = []
@@ -25,10 +25,12 @@ class Basic(commands.Cog):
     )
     async def ping_cmd(self, ctx):
         msg = await ctx.send('```Pinging...```')
-        time.sleep(0.5)
-        timed=self.bot.latency*1000
-        await msg.edit(content='```Pong. Time round-trip: {}ms.```'.format(timed))
-        pingtimes.append(timed)
+        time_1 = time.perf_counter()
+        await ctx.trigger_typing()
+        time_2 = time.perf_counter()
+        ping = round((time_2-time_1)*1000)
+        await msg.edit(content='```Pong. Time round-trip: {}ms.```'.format(ping))
+        pingtimes.append(ping)
 
     @commands.command(
         name='announce',
@@ -63,8 +65,7 @@ class Basic(commands.Cog):
         c=await ctx.send('Awaiting message:')
         messages=await self.bot.wait_for('message', check=check)
         await messages.pin()
-        await c.edit(content=messages)
-        await c.add_reaction(emoji='😱') 
+        await c.edit(content="Message pinned:\n`{}`".format(messages.content))
 
 def setup(bot):
     bot.add_cog(Basic(bot))
