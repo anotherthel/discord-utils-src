@@ -1,6 +1,7 @@
 from discord.ext import commands
 import discord, csv, random, asyncio
 
+
 colors = {
   'DEFAULT': 0x000000,
   'WHITE': 0xFFFFFF,
@@ -93,7 +94,7 @@ class Misc(commands.Cog):
 
     @commands.command(
         name='profile',
-        description='Nonems',
+        description='View stats of user.',
         aliases=['prof']
     )
     async def profile_user(self, ctx, member:discord.Member):
@@ -102,14 +103,24 @@ class Misc(commands.Cog):
             embed=discord.Embed(title='{}'.format(member.name), color=0x000000)
             url=member.avatar_url
             embed.set_thumbnail(url=url)
-            embed.add_field(name='__Stats__', value='**ID:** {}\n**Discriminator:** #{}\n**Nick:** {}\n**Guild:** '.format(member.id, member.discriminator, member.nick, ctx.guild))
+            on_mobile=''
+            if member.is_on_mobile():
+                on_mobile = 'Mobile :iphone:'
+            else:
+                on_mobile = 'PC :desktop:'
+            embed.add_field(name='__Stats__', value='**ID:** {}\n**Discriminator:** #{}\n**Nick:** {}\n**Guild:** {}\n**Status:** {}\n**Platform:** {}\n**Permissions:** {}'.format(member.id, member.discriminator, member.nick, member.guild, member.status, on_mobile, member.guild_permissions))
+            roles=[]
+            for role in member.roles:
+                roles.append(role.name)
+            roles = ', '.join(roles)
+            embed.add_field(name='__Roles:__', value=roles, inline=False)
             await ctx.send(embed=embed)
         except Exception as e:
             await ctx.send(f'```{e}```')
 
     @commands.command(
         name='set_status',
-        description='Nonems',
+        description='set bot status (owner only)',
         aliases=['s_s', '$_$']
     )
     async def set_status(self, ctx):
@@ -118,7 +129,7 @@ class Misc(commands.Cog):
             ctx.message.content.pop(0)
             msg=' '.join(ctx.message.content)
             game=discord.Game(msg)
-            await self.bot.change_presence(status=discord.Status.idle, activity=game)
+            await self.bot.change_presence(status=discord.Status.online, activity=game)
             msg=await ctx.send('Setting status...')
             await asyncio.sleep(0.75)
             await msg.edit(content='Status changed to:\nStatus: `discord.Status.online`\nActivity: `{}`'.format(game))
@@ -130,7 +141,7 @@ class Misc(commands.Cog):
 
     @commands.command(
         name='create_channel',
-        description='None',
+        description='Create a new channel (owner only)',
         aliases=[]
     )
     async def create_channel(self, ctx):
@@ -149,13 +160,50 @@ class Misc(commands.Cog):
 
     @commands.command(
         name='users',
-        description='None',
+        description='View users bot can see.',
         aliases=[]
     )
     async def get_users(self, ctx):
         await ctx.send('Users:')
         for user in self.bot.users:
             await ctx.send('{}'.format(user))
+
+    @commands.command(
+        name='reload_cog',
+        description='Reload cog (owner only)',
+        aliases=['r_c']
+    )
+    async def reload_cog(self, ctx):
+        if ctx.author.id == 640203987437748246:
+            msg=ctx.message.content.split()
+            msg.pop(0)
+            msg=' '.join(msg)
+            cogs = ['cogs.basic', 'cogs.help', 'cogs.b_info', 'cogs.invite', 'cogs.roles', 'cogs.misc', 'cogs.tags', 'cogs.mod']
+            if msg in cogs:
+                c=await ctx.send('Loading cog...')
+                try:
+                    self.bot.load_extension(msg)
+                    await c.edit(content='Reloaded cog `{}`.'.format(msg))
+                except Exception as e:
+                    await c.edit(content='```%s```'%(e))
+            else:
+                await ctx.send('`{}` is not a cog.'.format(msg))
+        else:
+            return
+
+    @commands.command(
+        name='u_a',
+        description='See avatar of user.',
+        aliases=['user_av']
+    )
+    async def show_av(self, ctx, member: discord.Member):
+        embed=discord.Embed(title="{}'s avatar".format(member), color=0x000000)
+        url=member.avatar_url
+        embed.set_image(url=url)
+        await ctx.send(embed=embed)
+
+
+
 
 
 
