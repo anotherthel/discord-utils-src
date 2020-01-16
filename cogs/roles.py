@@ -2,7 +2,7 @@ from discord.ext import commands
 import discord, discord.utils
 
 
-class NewRole(commands.Cog):
+class Roles(commands.Cog):
     def __init__(self, bot):
         self.bot=bot
 
@@ -11,12 +11,11 @@ class NewRole(commands.Cog):
         description='add new role.',
         aliases=['a_r', 'a r']
     )
-    async def add_role(self, ctx):
+    async def add_role(self, ctx, role:discord.Role):
         member = ctx.message.author
         ctx.message.content = ctx.message.content.split()
         ctx.message.content.pop(0)
         ctx.message.content=" ".join(ctx.message.content)
-        role = discord.utils.get(member.guild.roles, name='{}'.format(ctx.message.content))
         try:
             await member.add_roles(member, role)
             await ctx.send('Role created.')
@@ -57,5 +56,5 @@ class NewRole(commands.Cog):
 
 
 def setup(bot):
-    bot.add_cog(NewRole(bot))
+    bot.add_cog(Roles(bot))
 
