@@ -1,5 +1,5 @@
 from discord.ext import commands
-import discord
+import discord, sys
 
 tags = []
 
@@ -13,28 +13,35 @@ class Tags(commands.Cog):
         aliases=['ts']
     )
     async def all_tags(self, ctx):
-        embed=discord.Embed(title='__Tags__', color=0x000000)
+        messages = '__Tags__\n'
         if len(tags) > 0:
-            embed.add_field(name='All:', value='```{}```'.format(tags), inline=False)
+            for tag in tags:
+                messages += '{}, '.format(tag[0])
+
         else:
-            embed.add_field(name='No tags', value='*Use ut.create_tag [link] to create one.*', inline=False)
-        await ctx.send(embed=embed)
+            messages += '**No tags**\n*Use create_tag to create one.*'
+        await ctx.send(messages)
     
     @commands.command(
         name='create_tag',
         description='Create a new tag.',
-        aliases=['c_t', 'ct']
+        aliases=[]
     )
     async def create_tag(self, ctx):
-        msg=ctx.message.content.split()
-        try:
-            msg.pop(0)
-            msg=' '.join(msg)
-            to_be_edited=await ctx.send('Creating tag...')
-            tags.append(msg)
-            await to_be_edited.edit(content='Tag created: `{}`'.format(msg))
-        except Exception as e:
-            await ctx.send('```{}```'.format(e))
+        def check(ms):
+            return ms.channel == ctx.message.channel and ms.author == ctx.message.author
+        tag = []
+        await ctx.send('Title:')
+        title=await self.bot.wait_for('message', check=check)
+        tag.append(title.content)
+        await ctx.send('Content:')
+        content=await self.bot.wait_for('message', check=check)
+        tag.append(content.content)
+        await ctx.send('Tag created :white_check_mark:')
+        tags.append(tag)
+        print(tag)
+
+
 
     @commands.command(
         name='clear_tags',
@@ -47,23 +54,32 @@ class Tags(commands.Cog):
         await msg.edit(content='Tags deleted. Tags: `{}`'.format(tags))
 
     @commands.command(
-        name='del_tag',
-        description='Deletes specific tag.',
+        name='tag',
+        description='View cotnent of a tag.',
         aliases=[]
     )
-    async def del_tag(self, ctx):
-        loaded=ctx.message.content.split()
-        try:
-            loaded.pop(0)
-            loaded=' '.join(loaded)
-            if loaded in tags:
-                msg=await ctx.send('Deleting tag...')
-                tags.remove(loaded)
-                await msg.edit(content='Tag deleted.')
-            else:
-                await ctx.send('Tag not found.')
-        except Exception as e:
-            await ctx.send('```{}```'.format(e))
+    async def tag(self, ctx):
+        message = ctx.message.content.split()
+        message.pop(0)
+        message = ' '.join(message)
+        for tag in tags:
+            try:
+                if message == tag[0]:
+                    print(tag)
+                    c=tag[0]
+                    tag.pop(0)
+                    await ctx.send(tag)
+                    tag.insert(0, c)
+                else:
+                    pass
+            except:
+                e=sys.exc_info()[0]
+                await ctx.send('{}'.format(e))
+
+            
+
+
+
 
 
 def setup(bot):
