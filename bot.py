@@ -1,11 +1,10 @@
-'''Imports (duh)'''
-
 from discord.ext import commands
 from keep_alive import keep_alive
 from discord.utils import get
+import discord
 
+start=0
 
-# This is the prefix thing listens to all prefixes in 'prefixes'
 def get_prefix(client, message):
 
     prefixes = ['ut.', 'Util.', 'Utils.', 'u.', '[[']   
@@ -15,7 +14,6 @@ def get_prefix(client, message):
     return commands.when_mentioned_or(*prefixes)(client, message)
 
 
-# This creates the bot object.
 bot = commands.Bot(                         
     command_prefix=get_prefix,              
     description='A sorta useless Util bot.',  
@@ -23,20 +21,19 @@ bot = commands.Bot(
     case_insensitive=True             
 )
 
-# Gets all the cogs to load.
-cogs = ['cogs.basic', 'cogs.help', 'cogs.b_info', 'cogs.invite', 'cogs.roles', 'cogs.misc', 'cogs.tags']
+cogs = ['cogs.basic', 'cogs.b_info', 'cogs.invite', 'cogs.roles', 'cogs.misc', 'cogs.tags', 'cogs.mod']
 
 
-# on ready function
 @bot.event
 async def on_ready():                                       
     print(f'Logged in as {bot.user.name} id:{bot.user.id}')
     for cog in cogs:
         bot.load_extension(cog)
         print(cog)
+    game=discord.Game('ut.help for help (duh)')
+    await bot.change_presence(status=discord.Status.online, activity=game)
     return
 
-# On member join function
 @bot.event
 async def on_member_join(member):
         guild = member.guild
@@ -45,6 +42,6 @@ async def on_member_join(member):
             await guild.system_channel.send(to_send)
 
 
-# Runs flask function to 'keep alive'
+
 keep_alive()
-bot.run('token here', bot=True, reconnect=True) # run the bot
+bot.run('NjY1Njc0NDA3NjExNzI3OTE1.XhpDnw.0Wy-z58Gz_HEgrWHQK3SgQkreGU', bot=True, reconnect=True)
