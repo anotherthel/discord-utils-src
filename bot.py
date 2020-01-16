@@ -44,4 +44,4 @@ async def on_member_join(member):
 
 
 keep_alive()
-bot.run('NjY1Njc0NDA3NjExNzI3OTE1.XhpDnw.0Wy-z58Gz_HEgrWHQK3SgQkreGU', bot=True, reconnect=True)
+bot.run('token here', bot=True, reconnect=True)
