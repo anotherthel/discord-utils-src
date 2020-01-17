@@ -9,4 +9,6 @@ https://discordapp.com/api/oauth2/authorize?client_id=665674407611727915&permiss
 ###### and others (too lazy to list all)
 
 
+### Announcement:
 
+#### The bot is updated for the final time for a while, there will be no new updates for a while.
