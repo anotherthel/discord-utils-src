@@ -45,6 +45,14 @@ class Basic(commands.Cog):
         with open('times.csv', 'a') as foo:
             fooo=csv.writer(foo, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
             fooo.writerow([str(ping)])
+
+    @commands.command(
+        name='latency',
+        description='Get bot latency.',
+        aliases=['_l_']
+    )
+    async def get_latency(self, ctx):
+        await ctx.send('Latency: `{}ms`'.format(self.bot.latency*1000))
         
 
     
