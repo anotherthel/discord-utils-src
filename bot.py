@@ -1,13 +1,17 @@
 from discord.ext import commands
 from keep_alive import keep_alive
 from discord.utils import get
-import discord
+import discord, os
+from dotenv import load_dotenv
+
+load_dotenv()
+token = os.getenv('DISCORD_TOKEN')
 
 start=0
 
 def get_prefix(client, message):
 
-    prefixes = ['ut.', 'Util.', 'Utils.', 'u.', '[[']   
+    prefixes = ['ut.', '[[', 'ut. ']   
 
     if not message.guild:
         prefixes = ['ut.']   
@@ -34,14 +38,11 @@ async def on_ready():
     await bot.change_presence(status=discord.Status.online, activity=game)
     return
 
-@bot.event
-async def on_member_join(member):
-        guild = member.guild
-        if guild.system_channel is not None:
-            to_send = '{0.mention}, welcome to {1.name}!'.format(member, guild)
-            await guild.system_channel.send(to_send)
+
+
+
 
 
 
 keep_alive()
-bot.run('token here', bot=True, reconnect=True)
+bot.run(token, bot=True, reconnect=True)
