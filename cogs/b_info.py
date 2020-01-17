@@ -20,18 +20,21 @@ class Stuff(commands.Cog):
         xxx=list(xx)
         time=xxx[0]
         time = ' '.join(time)
-        embed=discord.Embed(title='thel vadam likes nothing jr.', description='(rewrite version w/ cogs)', color=0x000000)
+        embed=discord.Embed(title='thel vadam likes nothing jr.', description='(rewrite version w/ cogs)\n*This bot is in beta, so expect a few bugs... DM Thel \'Vadam likes nothing#1359 with any issues.*', color=0x000000)
         url=self.bot.user.avatar_url
         embed.set_thumbnail(url=url)
-        embed.add_field(name='__Stats__', value='**discord.py version:** {}\n**Ping time (last):** {}ms\n**Shards:** {}\n**Num of guilds:** {}'.format(discord.__version__, time, self.bot.shard_count, len(self.bot.guilds)), inline=True)
+        users = 0
+        for guild in self.bot.guilds:
+            users += len(guild.members)
+        embed.add_field(name='__Stats__', value='**discord.py version:** {}\n**Ping time (last):** {}ms\n**Num of guilds:** {}\n**Users:** {}\n**Commands:** 27'.format(discord.__version__, time, len(self.bot.guilds), users), inline=True)
         embed.add_field(name='__Created by:__', value='Thel Vadam likes nothing', inline=True)
         embed.add_field(name='Owner ID:', value='{}'.format(self.bot.owner_id))
         embed.add_field(name='Links:', value='[**invite**](https://discordapp.com/api/oauth2/authorize?client_id=665674407611727915&permissions=8&scope=bot)  | [**source**](https://github.com/insert-ctrl/discord-utils-src/tree/master)')
         embed.set_footer(text='ID: {} | Made by Thel Vadam likes nothing#1359 | Made using repl.it'.format(self.bot.user.id))
         sended=await ctx.send(embed=embed)
-        await sended.add_reaction(emoji='👍')
-        await sended.add_reaction(emoji='👎')
-        await sended.add_reaction(emoji='⚙️')
+        await sended.add_reaction(emoji='\U0001f44d')
+        await sended.add_reaction(emoji='\U0001f44e')
+        await sended.add_reaction(emoji='\U00002699')
 
     @commands.command(
         name='serverinfo',
@@ -64,6 +67,15 @@ class Stuff(commands.Cog):
     )
     async def send_link(self, ctx):
         await ctx.send('https://github.com/insert-ctrl/discord-utils-src/tree/master')
+
+    @commands.command(
+        name='prefixes',
+        description='Get all prefixes.',
+        aliases=[]
+    )
+    async def send_prefixes(self, ctx):
+        prefixes = ['ut.', '[[']
+        await ctx.send('**discord utils prefixes**\n{}'.format(prefixes))
 
 
 
