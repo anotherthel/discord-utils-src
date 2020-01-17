@@ -153,6 +153,7 @@ class Misc(commands.Cog):
             if msg in cogs:
                 c=await ctx.send('Loading cog...')
                 try:
+                    self.bot.unload_extension(msg)
                     self.bot.load_extension(msg)
                     await c.edit(content='Reloaded cog `{}`.'.format(msg))
                 except Exception as e:
