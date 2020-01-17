@@ -9,10 +9,4 @@ https://discordapp.com/api/oauth2/authorize?client_id=665674407611727915&permiss
 ###### and others (too lazy to list all)
 
 
-## Stats
 
-#### Lines: 622 (in counting)
-#### Cogs: 7 (also in counting)
-#### Functions: ~30 (again, in counting)
-
-##### FYI bot is in developement.
