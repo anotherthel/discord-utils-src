@@ -162,6 +162,17 @@ class Misc(commands.Cog):
                 await ctx.send('`{}` is not a cog.'.format(msg))
         else:
             return
+        
+    @commands.command(
+        name='cogs',
+        description='View all bots cogs.',
+        aliases=[]
+    )
+    async def view_cogs(self, ctx):
+        try:
+            await ctx.send('{}'.format(self.bot.cogs))
+        except Exception as e:
+            await ctx.send('```{}```'.format(e))
 
     @commands.command(
         name='u_a',
