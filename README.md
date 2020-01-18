@@ -18,7 +18,9 @@
 ##### Mod:<br/>
 ###### Features basic utilities like `kick` and `ban`.<br/>
 ##### Tags:<br/>
-###### `create_tag`
+###### `create_tag`: create a tag (like a bookmark)<br/>
+###### `tag`: view content of tag.<br/>
+#### And more!
 
 
 
