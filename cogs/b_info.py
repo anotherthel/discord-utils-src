@@ -18,12 +18,22 @@ class Stuff(commands.Cog):
         x=open('times.csv')
         xx=csv.reader(x)
         xxx=list(xx)
-        time=xxx[0]
-        time = ' '.join(time)
+        all_times = 0
+        for x in xxx:
+            c = []
+            c.append(x[0])
+            c[0] = int(c[0])
+            all_times += c[0]
+        time = all_times / len(xxx)
+        time = str(time)
+        time = list(time)
+        for i in range(len(time)-4):
+            time.pop()
+        _time = ''.join(time)
         embed=discord.Embed(title='thel vadam likes nothing jr.', color=0x000000)
         url=self.bot.user.avatar_url
         embed.set_author(
-            name=ctx.message.author.name,
+            name=embed.author.name,
             icon_url=url
         )
         embed.set_thumbnail(url=url)
@@ -33,7 +43,11 @@ class Stuff(commands.Cog):
         commands = 0
         for command in self.bot.commands:
             commands += 1
-        embed.add_field(name='__Stats__', value='**discord.py version:** {}\n**Ping time (last):** {}ms\n**Num of guilds:** {}\n**Users:** {}\n**Commands:** {}'.format(discord.__version__, time, len(self.bot.guilds), users, commands), inline=True)
+        latlat = list(str(self.bot.latency*1000))
+        for i in range(len(latlat)-2):
+            latlat.pop()
+        lat = ''.join(latlat)
+        embed.add_field(name='__Stats__', value='**discord.py version:** {}\n**Avg ping time:** {}ms\n**Websocket latency:** {}ms\n**Num of guilds:** {}\n**Users:** {}\n**Commands:** {}'.format(discord.__version__,  _time, lat, len(self.bot.guilds), users, commands), inline=True)
         embed.add_field(name='__Created by:__', value='Thel Vadam likes nothing', inline=True)
         embed.add_field(name='Links:', value='[**invite**](https://discordapp.com/api/oauth2/authorize?client_id=665674407611727915&permissions=8&scope=bot)  **|** [**source**](https://github.com/insert-ctrl/discord-utils-src/tree/master)', inline=False)
         embed.set_footer(text='ID: {} | Made by Thel Vadam likes nothing#1359 | Made using repl.it'.format(self.bot.user.id))
@@ -41,7 +55,6 @@ class Stuff(commands.Cog):
         await sended.add_reaction(emoji='\U0001f44d')
         await sended.add_reaction(emoji='\U0001f44e')
         await sended.add_reaction(emoji='\U00002699')
-
     @commands.command(
         name='serverinfo',
         description='View server info.',
