@@ -14,7 +14,11 @@
 ###### `urban`: get urban dictionary definition of a word. (not recommended for unknown words)<br/>
 ###### `color`: get the discord.py color code along w/ sample<br/>
 ###### `prof`: get user info on specified user (@mention)<br/>
-###### `nick_set`: change the bot's name!<br>
+###### `nick_set`: change the bot's name!<br/>
+##### Mod:<br/>
+###### Features basic utilities like `kick` and `ban`.<br/>
+##### Tags:<br/>
+###### `create_tag`
 
 
 
