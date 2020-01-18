@@ -47,7 +47,20 @@ class Misc(commands.Cog):
 
 
         
-
+    @commands.command(
+        name='xkcd',
+        description='Show an xkcd comic.',
+        aliases=['xxxx']
+    )
+    async def xkcd(self, ctx):
+        msg = ctx.message.content.split()
+        if len(msg) == 1:
+            r=random.randint(1, 2250)
+            await ctx.send('https://xkcd.com/{}/'.format(r))
+        else:
+            num = int(msg[1])
+            if num <= 2250 and num >= 1:
+                await ctx.send('https://xkcd.com/{}/'.format(str(num)))
 
     @commands.command(
         name='color',
@@ -79,7 +92,7 @@ class Misc(commands.Cog):
                 on_mobile = 'Mobile :iphone:'
             else:
                 on_mobile = 'PC :desktop:'
-            embed.add_field(name='__Stats__', value='**ID:** {}\n**Discriminator:** #{}\n**Nick:** {}\n**Guild:** {}\n**Status:** {}\n**Platform:** {}\n**Permissions:** {}'.format(member.id, member.discriminator, member.nick, member.guild, member.status, on_mobile, member.guild_permissions))
+            embed.add_field(name='__Stats__', value='**ID:** {}\n**Discriminator:** #{}\n**Nick:** {}\n**Guild:** {}\n**Status:** {}\n**Platform:** {}\n**Bot:** {}\n**Permissions:** {}'.format(member.id, member.discriminator, member.nick, member.guild, member.status, on_mobile, member.bot, member.guild_permissions))
             roles=[]
             for role in member.roles:
                 roles.append(role.name)
@@ -129,15 +142,7 @@ class Misc(commands.Cog):
             await ctx.send('`create_channel` is an owner only command.')
             return
 
-    @commands.command(
-        name='users',
-        description='View users bot can see.',
-        aliases=[]
-    )
-    async def get_users(self, ctx):
-        await ctx.send('Users:')
-        for user in self.bot.users:
-            await ctx.send('{}'.format(user))
+
 
     @commands.command(
         name='reload_cog',
@@ -155,14 +160,14 @@ class Misc(commands.Cog):
                 try:
                     self.bot.unload_extension(msg)
                     self.bot.load_extension(msg)
-                    await c.edit(content='Reloaded cog `{}`.'.format(msg))
+                    await c.edit(content=':white_check_mark: Reloaded cog `{}`.'.format(msg))
                 except Exception as e:
-                    await c.edit(content='```%s```'%(e))
+                    await c.edit(':x: Something went wrong:\n```{}```'.format(e))
             else:
-                await ctx.send('`{}` is not a cog.'.format(msg))
+                await ctx.send(':x: `{}` is not a cog.'.format(msg))
         else:
             return
-        
+
     @commands.command(
         name='cogs',
         description='View all bots cogs.',
@@ -184,6 +189,22 @@ class Misc(commands.Cog):
         url=member.avatar_url
         embed.set_image(url=url)
         await ctx.send(embed=embed)
+
+    @commands.command(
+        name='urban',
+        description='View urban dictionary definition of word.',
+        aliases=[]
+    )
+    async def urban_def(self, ctx):
+        msg = ctx.message.content.split()
+        if len(msg) == 2:
+            await ctx.send('https://www.urbandictionary.com/define.php?term={}'.format(msg[1]))
+        elif len(msg) > 2:
+            await ctx.send(':x: Something went wrong. Try this:\n`ut.urban [insert __one__ word]`')
+        else:
+            await ctx.send('```list index out of range.```')
+
+
 
 
 
