@@ -1,12 +1,15 @@
-## discord utils (w/ cogs)
+## uselessness (he's not useless)
 
-#### discord utils is a util bot, invite him to your server by link below.
-[LINK](https://discordapp.com/api/oauth2/authorize?client_id=665674407611727915&permissions=8&scope=bot)
+#### uselessness is a fun discord bot with some basic util functions.
+[Invite link](https://discordapp.com/api/oauth2/authorize?client_id=665674407611727915&permissions=8&scope=bot)
 
 #### Used:
 ###### discord.py<br/>
 ###### discord.ext<br/>
-###### and others (too lazy to list all)
+###### and others (check the `packages` folder for info on packages used)
+
+#### Features:
+##### coming soon.
 
 
 
