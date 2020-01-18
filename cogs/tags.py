@@ -31,9 +31,16 @@ class Tags(commands.Cog):
         def check(ms):
             return ms.channel == ctx.message.channel and ms.author == ctx.message.author
         tag = []
-        await ctx.send('Title:')
-        title=await self.bot.wait_for('message', check=check)
-        tag.append(title.content)
+        msg = ctx.message.content.split()
+        if len(msg) == 2:
+            title = msg[1]
+            tag.append(title)
+        elif len(msg) > 2:
+            await ctx.send('Tag one word only.')
+            return
+        else:
+            await ctx.send('Missing: `name`')
+            return
         await ctx.send('Content:')
         content=await self.bot.wait_for('message', check=check)
         tag.append(content.content)
