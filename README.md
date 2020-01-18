@@ -9,7 +9,12 @@
 ###### and others (check the `packages` folder for info on packages used)
 
 #### Features:
-##### coming soon.
+##### Fun/Misc<br/>
+###### `xkcd`: get a random xkcd comic from choice of over 2000<br/>
+###### `urban`: get urban dictionary definition of a word. (not recommended for unknown words)<br/>
+###### `color`: get the discord.py color code along w/ sample<br/>
+###### `prof`: get user info on specified user (@mention)<br/>
+###### `nick_set`: change the bot's name!<br>
 
 
 
