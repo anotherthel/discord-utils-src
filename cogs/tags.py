@@ -1,5 +1,6 @@
 from discord.ext import commands
 import discord, sys
+from datetime import datetime
 
 tags = []
 
@@ -82,6 +83,8 @@ class Tags(commands.Cog):
             except:
                 e=sys.exc_info()[0]
                 await ctx.send('{}'.format(e))
+
+    
 
             
 
