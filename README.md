@@ -20,7 +20,9 @@
 ##### Tags:<br/>
 ###### `create_tag`: create a tag (like a bookmark)<br/>
 ###### `tag`: view content of tag.<br/>
-#### And more!
+#### And more!<br/><br/>
+### New feature: Good bot bad bot!<br/>
+##### For all bots on your server: rate them with `goodbot` and `badbot`, and see which is the best.
 
 
 
