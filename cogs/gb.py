@@ -1,5 +1,6 @@
 from discord.ext import commands
 import discord, time, sys
+from discord.ext.commands import has_permissions
 
 bots = []
 
@@ -107,16 +108,15 @@ class gb(commands.Cog, name='Good_Bot'):
         aliases=['_a']
     )
     async def add_all(self, ctx):
-        if ctx.author.id == 640203987437748246:
-            msg = await ctx.send('\U0000231b Finding and adding bots...')
-            done = 0
-            guild = ctx.guild
-            for member in guild.members:
-                if member.bot and member.id != 665674407611727915:
-                    bots.append([member.name, 0])
-                    done += 1
-            time.sleep(0.2)
-            await msg.edit(content='\U00002705 Bots successfully added: {}'.format(done))
+        msg = await ctx.send('\U0000231b Finding and adding bots...')
+        done = 0
+        guild = ctx.guild
+        for member in guild.members:
+            if member.bot and member.id != 665674407611727915:
+                bots.append([member.name, 0])
+                done += 1
+        time.sleep(0.2)
+        await msg.edit(content='\U00002705 Bots successfully added: {}'.format(done))
 
     @commands.command(
         name='_all_bots',
