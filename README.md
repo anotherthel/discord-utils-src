@@ -24,7 +24,7 @@
 <br/>
  New feature: Good bot bad bot! For all bots on your server: rate them with `goodbot` and `badbot`, and see which is the best.
  
-And (this time for real) no updates for a while. (don't mind above, unknown problem)
-Post an issue if you find any issues, or if you find a way to fix the formatting problem. (thanks)
+And (this time for real) no updates for a while.
+Post an issue if you find any issues.
 
 
