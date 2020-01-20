@@ -7,7 +7,7 @@ import time, discord, datetime, csv
 pingtimes = []
 
 
-class Basic(commands.Cog):
+class Basic(commands.Cog, name='Ping/latency'):
     def __init__(self, bot):
         self.bot=bot
 
@@ -41,7 +41,7 @@ class Basic(commands.Cog):
         time_2 = time.perf_counter()
         ping = round((time_2-time_1)*1000)
         await msg.delete()
-        await ctx.send('Pong. Time round-trip: `{}ms`.'.format(ping))
+        await ctx.send(':ping_pong: Pong. Time round-trip: `{}ms`.'.format(ping))
         with open('times.csv', 'a') as foo:
             fooo=csv.writer(foo, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
             fooo.writerow([str(ping)])
@@ -53,6 +53,12 @@ class Basic(commands.Cog):
     )
     async def get_latency(self, ctx):
         await ctx.send('Latency: `{}ms`'.format(self.bot.latency*1000))
+        with open('latency.csv', 'a') as foo:
+            fooo=csv.writer(foo, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+            fooo.writerow([str(self.bot.latency*1000)])
+
+    
+
         
 
     
