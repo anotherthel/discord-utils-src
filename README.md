@@ -23,7 +23,8 @@
 #### And more!<br/><br/>
 <br/>
  <s>New feature: Good bot bad bot! For all bots on your server: rate them with `goodbot` and `badbot`, and see which is the best.</s><br/>
- Update: new commands, like `eval` and `repl`, etc. And: get hex code for colors, and other conversion commands from utf-8 to binary, ascii, etc.
+ Update: new commands, like `eval` and `repl`, etc. And: get hex code for colors, and other conversion commands from utf-8 to binary, ascii, etc.<br/>
+ And get hex of text, not just numbers! (not sure how accurate)
 And (this time for real) no updates for a while.
 Post an issue if you find any issues.<br/>
 also created owner_only class for owner commands.
