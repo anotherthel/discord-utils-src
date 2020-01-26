@@ -11,7 +11,7 @@ start=0
 
 def get_prefix(client, message):
 
-    prefixes = ['ut.', '[[', 'ut. ']   
+    prefixes = ['ut.', ';;', 'ut']   
 
     if not message.guild:
         prefixes = ['ut.']   
@@ -25,12 +25,13 @@ bot = commands.Bot(
     case_insensitive=True             
 )
 
-cogs = ['cogs.basic', 'cogs.b_info', 'cogs.invite', 'cogs.roles', 'cogs.misc', 'cogs.tags', 'cogs.mod']
+cogs = ['cogs.basic', 'cogs.b_info', 'cogs.invite', 'cogs.roles', 'cogs.misc', 'cogs.tags', 'cogs.mod', 'cogs.gb', 'cogs.eval', 'cogs.owner_only', 'cogs.code']
 
 
 @bot.event
 async def on_ready():                                       
     print(f'Logged in as {bot.user.name} id:{bot.user.id}')
+    bot.remove_command('help')
     for cog in cogs:
         bot.load_extension(cog)
         print(cog)
