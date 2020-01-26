@@ -1,10 +1,13 @@
 from discord.ext import commands
 import discord, csv, random, asyncio, binascii, codecs
+from discord.ext.commands.cooldowns import BucketType
 
 
 
 
 colors=[0x000000,0xFFFFFF,0x1ABC9C,0x2ECC71,0x3498DB,0x9B59B6,0xE91E63,0xF1C40F,0xE67E22,0xE74C3C,0x95A5A6,0x34495E,0x34495E,0x11806A,0x11806A,0x1F8B4C,0x206694,0x71368A,0xAD1457,0xC27C0E,0xA84300,0x7289DA0,0x99AAB5]
+
+
 
 
 
@@ -34,7 +37,7 @@ class Misc(commands.Cog, name='Misc/Fun'):
             await ctx.send('Missing: `name`')
 
     @commands.command(
-        name='annoy someone',
+        name='annoy_someone',
         description='Nonems',
         aliases=['iass']
     )
@@ -54,27 +57,51 @@ class Misc(commands.Cog, name='Misc/Fun'):
         description='Show an xkcd comic.',
         aliases=['xxxx']
     )
+    @commands.cooldown(1, 5, commands.BucketType.user)
     async def xkcd(self, ctx):
-        msg = ctx.message.content.split()
-        if len(msg) == 1:
-            r=random.randint(1, 2250)
-            await ctx.send('https://xkcd.com/{}/'.format(r))
-        else:
-            num = int(msg[1])
-            if num <= 2250 and num >= 1:
-                await ctx.send('https://xkcd.com/{}/'.format(str(num)))
+        def check(ms):
+            return ms.channel == ctx.message.channel and ms.author == ctx.message.author
+        try:
+            msg = ctx.message.content.split()
+            if len(msg) == 1:
+                while True:
+                    r=random.randint(1, 2257)
+                    c=await ctx.send('https://xkcd.com/{}/\nUse `next` `prev` and `rand` to navigate comics.'.format(r))
+                    react = await self.bot.wait_for('message', check=check)
+                    if react.content == 'next':
+                        await c.edit(content='https://xkcd.com/{}/'.format(r+1))
+                    elif react.content == 'prev':
+                        await c.edit(content='https://xkcd.com/{}/'.format(r-1))
+                    elif react.content == 'rand':
+                        r=random.randint(1, 2257)
+                        await c.edit(content='https://xkcd.com/{}/'.format(r))
+                    else:
+                        break
+                else:
+                    num = int(msg[1])
+                    if num <= 2257 and num >= 1:
+                        await ctx.send('https://xkcd.com/{}/'.format(str(num)))
+        except discord.ext.commands.errors.CommandOnCooldown as c:
+            await ctx.send('@{}, {}'.format(ctx.author, c))
 
     
 
     @commands.command(
         name='color',
-        description='Show a random color.',
+        description='Show a random color in hex.',
         aliases=[]
     )
     async def rand_color(self, ctx):
-        c=random.choice(colors)
+        x=random.choice(colors)
         try:
-            embed=discord.Embed(title='Random color:', description=c, color=c)
+            c=hex(x)
+            ff=str(c)
+            ff=list(ff)
+            ff.pop(0)
+            ff.pop(0)
+            ff.insert(0, '#')
+            ff=''.join(ff)
+            embed=discord.Embed(title='Random color:', description='**{}**/**{}**'.format(ff.upper(), c), color=int(x))
             embed.add_field(name='<--', value='*Look to the left to see color, not here!*', inline=False)
             await ctx.send(embed=embed)
         except Exception as e:
@@ -88,19 +115,29 @@ class Misc(commands.Cog, name='Misc/Fun'):
     async def profile_user(self, ctx, member:discord.Member):
         try:
             await self.bot.fetch_user(ctx.author.id)
-            embed=discord.Embed(title='__Stats__'.format(member.name), color=0x000000)
-            embed.set_author(
-                name=member.name,
-                icon_url=member.avatar_url
-            )
+            embed=discord.Embed(title='', color=0x000000)
             url=member.avatar_url
             embed.set_thumbnail(url=url)
+            embed.set_author(
+                name=ctx.author,
+                icon_url=ctx.author.avatar_url
+            )
             on_mobile=''
             if member.is_on_mobile():
                 on_mobile = 'Mobile :iphone:'
             else:
                 on_mobile = 'PC :computer:'
-            embed.add_field(name='__General__', value='**ID:** {}\n**Discriminator:** #{}\n**Nick:** {}\n**Current guild:** {}\n**Status:** {}\n**Platform:** {}\n**Bot:** {}\n**Permissions:** {}'.format(member.id, member.discriminator, member.nick, member.guild, member.status, on_mobile, member.bot, member.guild_permissions))
+            activity = ''
+            try:
+                if member.activity.name == 'Custom Status':
+                    activity = member.activity.name
+                else:
+                    activity = 'None'
+            except:
+                activity = 'None'
+            embed.add_field(name='User Info', value='**ID:** {}\n**Discriminator:** #{}\n**Nickname:** `{}`\n**Full name:** {}'.format(member.id, member.discriminator, member.nick, member.name), inline=False)
+            embed.add_field(name='Status', value='**Status:** {}\n**Activity:** {}\n**Platform:** {}'.format(member.status, activity, on_mobile), inline=True)
+            embed.add_field(name='Misc', value='**Bot:** {}\n**Number of roles:** {}\n**Joined:** {}'.format(member.bot, len(member.roles), member.joined_at), inline=True)
             roles=[]
             for role in member.roles:
                 roles.append(role.name)
@@ -152,29 +189,6 @@ class Misc(commands.Cog, name='Misc/Fun'):
 
 
 
-    @commands.command(
-        name='reload_cog',
-        description='Reload cog (owner only)',
-        aliases=['r_c', 'r-c']
-    )
-    async def reload_cog(self, ctx):
-        if ctx.author.id == 640203987437748246:
-            msg=ctx.message.content.split()
-            msg.pop(0)
-            msg=' '.join(msg)
-            cogs = ['cogs.basic', 'cogs.help', 'cogs.b_info', 'cogs.invite', 'cogs.roles', 'cogs.misc', 'cogs.tags', 'cogs.mod', 'cogs.gb']
-            if msg in cogs:
-                c=await ctx.send('Loading cog...')
-                try:
-                    self.bot.unload_extension(msg)
-                    self.bot.load_extension(msg)
-                    await c.edit(content=':white_check_mark: Reloaded cog `{}`.'.format(msg))
-                except Exception as e:
-                    await c.edit(content=':regional_indicator_x: Something went wrong:\n```{}```'.format(e))
-            else:
-                await ctx.send(':regional_indicator_x: `{}` is not a cog.'.format(msg))
-        else:
-            return
 
     @commands.command(
         name='cogs',
@@ -216,83 +230,9 @@ class Misc(commands.Cog, name='Misc/Fun'):
         else:
             await ctx.send('```list index out of range.```')
 
-    @commands.command(
-        name='ascii',
-        description='Get ascii code for <text>.',
-        aliases=[]
-    )
-    async def view_ascii(self, ctx):
-        msg = ctx.message.content.split()
-        msg.pop(0)
-        original = ' '.join(msg)
-        msg = ' '.join(msg)
-        msg = list(msg)
-        to_send = ''
-        for x in msg:
-            to_send += str(ord(x))
-            to_send += ' '
-        embed=discord.Embed(title='Ascii:', description='{} -> **{}**'.format(original, to_send), color=0x000000)
-        await ctx.send(embed=embed)
+    
 
-    @commands.command(
-        name='binary',
-        description='Get binary of string.',
-        aliases=['bin']
-    )
-    async def binary(self, ctx):
-        def text_to_bits(text, encoding='utf-8', errors='surrogatepass'):
-            bits = bin(int(binascii.hexlify(text.encode(encoding, errors)), 16))[2:]
-            return bits.zfill(8*((len(bits) + 7) // 8))
-        msg = ctx.message.content.split()
-        msg.pop(0)
-        msg = ' '.join(msg)
-        sent = text_to_bits(msg)
-        embed=discord.Embed(title='Binary', description='{} -> **{}**'.format(msg, sent))
-        await ctx.send(embed=embed)
-
-    @commands.command(
-        name='unicode',
-        description='Get unicode of string. (Doesn\'t work)',
-        aliases=['uni']
-    )
-    async def uni(self, ctx):
-        msg = ctx.message.content.split()
-        msg.pop(0)
-        msg = ' '.join(msg)
-        _o_ = msg
-        sent = msg.encode('utf-8', 'surrogatepass')
-        embed=discord.Embed(title='Unicode:', description='{} -> **{}**'.format(_o_, sent), color=0x00000)
-        await ctx.send(embed=embed)
-
-    @commands.command(
-        name='rand_ascii',
-        description='Get a random symbol in ascii.',
-        aliases=['r_as']
-    )
-    async def rand_ascii(self, ctx):
-        symbols = [
-            'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','!','@','#','$','%','^','&','*','(',')','1','2','3','4','5','6','7','8','9','0','<','>',',','.','/', '\\', '?', '{', '[', '}', ']', '|', '=', '+'
-        ]
-        symbol = random.choice(symbols)
-        embed=discord.Embed(title='Ascii:', description='{} -> **{}**'.format(symbol, ord(symbol)), color=0x000000)
-        await ctx.send(embed=embed)
-
-    @commands.command(
-        name='rand_bin',
-        description='Get a random symbol in binary.',
-        aliases=['r_b']
-    )
-    async def rand_bin(self, ctx):
-        symbols = [
-            'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','!','@','#','$','%','^','&','*','(',')','1','2','3','4','5','6','7','8','9','0','<','>',',','.','/', '\\', '?', '{', '[', '}', ']', '|', '=', '+'
-        ]
-        symbol = random.choice(symbols)
-        def text_to_bits(text, encoding='utf-8', errors='surrogatepass'):
-            bits = bin(int(binascii.hexlify(text.encode(encoding, errors)), 16))[2:]
-            return bits.zfill(8*((len(bits) + 7) // 8))
-        msg = text_to_bits(symbol)
-        embed=discord.Embed(title='Binary:', description='{} -> **{}**'.format(symbol, msg), color=0x000000)
-        await ctx.send(embed=embed)
+    
 
     @commands.command(
         name='a sentence in binary',
@@ -307,8 +247,29 @@ class Misc(commands.Cog, name='Misc/Fun'):
         msg=text_to_bits(text)
         await ctx.send(msg)
 
+    
 
- 
+
+    
+
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+        
 
 
 def setup(bot):
