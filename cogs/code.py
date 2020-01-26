@@ -1,5 +1,5 @@
 from discord.ext import commands
-import discord
+import discord, binascii
 
 class Code(commands.Cog, name='Conversion'):
     def __init__(self, bot):
@@ -7,14 +7,27 @@ class Code(commands.Cog, name='Conversion'):
 
     @commands.command(
         name='hex',
-        description='Get a number in hexformat.'
+        description='Get a number/char/string in hexformat.'
     )
     async def _hex_(self, ctx, num):
         try:
-            num = int(num)
+            ori=num
+            try:
+                h=hex(int(num))
+            except:
+                dd = []
+                for n in num:
+                    dd.append(ord(n))
+                h=''
+                print(dd)
+                for d in dd:
+                    h+=str(d)
+                h=int(h)
+                h=hex(h)
+
             embed=discord.Embed(
                 title='Hexadecimal format:',
-                description='{} -> **{}**'.format(str(num), str(hex(num))),
+                description='{} -> **{}**'.format(str(ori), h),
                 color=0x000000
             )
             await ctx.send(embed=embed)
