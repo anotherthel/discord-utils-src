@@ -14,7 +14,7 @@ class Owner(commands.Cog):
             msg=ctx.message.content.split()
             msg.pop(0)
             msg=' '.join(msg)
-            cogs = ['cogs.basic', 'cogs.help', 'cogs.b_info', 'cogs.invite', 'cogs.roles', 'cogs.misc', 'cogs.tags', 'cogs.mod', 'cogs.gb', 'cogs.eval']
+            cogs = ['cogs.basic', 'cogs.help', 'cogs.b_info', 'cogs.invite', 'cogs.roles', 'cogs.misc', 'cogs.tags', 'cogs.mod', 'cogs.gb', 'cogs.eval', 'cogs.code', 'cogs.owner_only']
             if msg in cogs:
                 c=await ctx.send('Loading cog...')
                 try:
