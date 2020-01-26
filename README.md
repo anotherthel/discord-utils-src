@@ -1,6 +1,6 @@
-## uselessness (he's not useless)
+## thel vadam likes nothing jr.
 
-#### uselessness is a fun discord bot with some basic util functions.
+#### He is a fun discord bot with some basic util functions, and other useful stuff, like getting the hex code for colors.
 [Invite link](https://discordapp.com/api/oauth2/authorize?client_id=665674407611727915&permissions=8&scope=bot)
 
 #### Used:
@@ -22,8 +22,8 @@
 ###### `tag`: view content of tag.<br/>
 #### And more!<br/><br/>
 <br/>
- New feature: Good bot bad bot! For all bots on your server: rate them with `goodbot` and `badbot`, and see which is the best.
- 
+ <s>New feature: Good bot bad bot! For all bots on your server: rate them with `goodbot` and `badbot`, and see which is the best.</s>
+ Update: new commands, like `eval` and `repl`, etc. And: get hex code for colors, and other conversion commands from utf-8 to binary, ascii, etc.
 And (this time for real) no updates for a while.
 Post an issue if you find any issues.
 
