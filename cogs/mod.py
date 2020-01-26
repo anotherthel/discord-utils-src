@@ -1,5 +1,6 @@
 from discord.ext import commands
 import discord
+from discord.ext.commands import has_permissions
 
 class Mod(commands.Cog):
     def __init__(self, bot):
@@ -10,8 +11,9 @@ class Mod(commands.Cog):
         description='Kick user.',
         aliases=[]
     )
+    @has_permissions(administrator=True)
     async def kick(self, ctx, member: discord.Member):
-        if ctx.author.id == 640203987437748246:
+        if True:
             guild=ctx.guild
             try:
                 await member.kick()
@@ -27,7 +29,7 @@ class Mod(commands.Cog):
         aliases=[]
     )
     async def ban(self, ctx, member:discord.Member):
-        if ctx.author.id == 640203987437748246:
+        if ctx.author.server_permissions.administrator:
             guild=ctx.guild
             try:
                 await member.ban()
@@ -43,7 +45,7 @@ class Mod(commands.Cog):
         aliases=[]
     )
     async def unban(self, ctx, member:discord.Member):
-        if ctx.author.id == 640203987437748246:
+        if ctx.author.server_permissions.administrator:
             guild=ctx.guild
             try:
                 await member.unban()
