@@ -40,8 +40,7 @@ class Basic(commands.Cog, name='Ping/latency'):
         await ctx.trigger_typing()
         time_2 = time.perf_counter()
         ping = round((time_2-time_1)*1000)
-        await msg.delete()
-        await ctx.send(':ping_pong: Pong. Time round-trip: `{}ms`.'.format(ping))
+        await msg.edit(content=':ping_pong: Pong. Time round-trip: `{}ms`.'.format(ping))
         with open('times.csv', 'a') as foo:
             fooo=csv.writer(foo, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
             fooo.writerow([str(ping)])
@@ -73,6 +72,5 @@ class Basic(commands.Cog, name='Ping/latency'):
 
 def setup(bot):
     bot.add_cog(Basic(bot))
-
 
 
