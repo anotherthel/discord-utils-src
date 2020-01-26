@@ -26,6 +26,6 @@
  Update: new commands, like `eval` and `repl`, etc. And: get hex code for colors, and other conversion commands from utf-8 to binary, ascii, etc.
 And (this time for real) no updates for a while.
 Post an issue if you find any issues.<br/>
-###### Oh yeah created new class owner only commands; only I can use them. (;
+also created owner_only class for owner commands.
 
 
