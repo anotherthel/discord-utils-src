@@ -1,8 +1,10 @@
 from discord.ext import commands
-import discord, time, csv, discord.utils
+import discord, time, csv, discord.utils, math
 
 
-
+def truncate(number, digits) -> float:
+    stepper = 10.0 ** digits
+    return math.trunc(stepper * number) / stepper
 
 
 class Stuff(commands.Cog, name='Info'):
@@ -45,14 +47,14 @@ class Stuff(commands.Cog, name='Info'):
         commands = 0
         for command in self.bot.commands:
             commands += 1
-        latlat = list(str(self.bot.latency*1000))
-        for i in range(len(latlat)-2):
-            latlat.pop()
-        lat = ''.join(latlat)
+        lat = self.bot.latency*1000
+        l=int(lat)
+        l=truncate(l, 2)
+        lat=str(l)
         embed.add_field(name='__Stats__', value='**discord.py version:** {}\n**Avg ping time:** {}ms\n**Websocket latency:** {}ms\n**Num of guilds:** {}\n**Users:** {}\n**Commands:** {}\n**Prefixes:** `ut`, `;;`, `?!`, `ut.`\n**Cooldown:** 5s'.format(discord.__version__,  _time, lat, len(self.bot.guilds), users, commands), inline=True)
         embed.add_field(name='__Code__', value='**Lines:** 720\n**Files:** 15\n**Cogs:** {}\n**Functions:** 47'.format(len(self.bot.cogs)), inline=True)
         embed.add_field(name='__Created by:__', value=user, inline=False)
-        embed.add_field(name='Links:', value='[**invite**](https://discordapp.com/api/oauth2/authorize?client_id=665674407611727915&permissions=8&scope=bot)  **|** [**source**](https://github.com/insert-ctrl/discord-utils-src/tree/master)', inline=False)
+        embed.add_field(name='Links:', value='[**invite**](https://discordapp.com/api/oauth2/authorize?client_id=665674407611727915&permissions=8&scope=bot)  **|** [**source**](https://github.com/insert-ctrl/discord-utils-src)', inline=False)
         embed.set_footer(text='ID: {} | Made by {} | Made using repl.it | Playing uthelp'.format(self.bot.user.id, user))
         sended=await ctx.send(embed=embed)
         await sended.add_reaction(emoji='\U0001f44d')
@@ -101,7 +103,7 @@ class Stuff(commands.Cog, name='Info'):
         aliases=['src']
     )
     async def send_link(self, ctx):
-        await ctx.send('https://github.com/insert-ctrl/discord-utils-src/tree/master')
+        await ctx.send('https://github.com/insert-ctrl/discord-utils-src')
 
     @commands.command(
         name='prefixes',
@@ -129,7 +131,7 @@ class Stuff(commands.Cog, name='Info'):
     )
     async def _help_(self, ctx, comm='all'):
         if comm == 'all':
-            embed=discord.Embed(title='thel vadam likes nothing jr.\'s help page', color=0x000000)
+            embed=discord.Embed(title='thel vadam likes nothing jr.\'s help page', description='Use `ut.help [command]` for info on command, or `ut.module [module name]` for help on specific module.', color=0x000000)
             cogs = [c for c in self.bot.cogs.keys()]
             for cog in cogs:
             # Get a list of all commands under each cog
@@ -210,4 +212,3 @@ class Stuff(commands.Cog, name='Info'):
 
 
 def setup(bot):
-    bot.add_cog(Stuff(bot))
