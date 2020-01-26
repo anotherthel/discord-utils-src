@@ -1,8 +1,10 @@
 from discord.ext import commands
-import time, discord, datetime, csv
+import time, discord, datetime, csv, math
 
 
-
+def truncate(number, digits) -> float:
+    stepper = 10.0 ** digits
+    return math.trunc(stepper * number) / stepper
 
 pingtimes = []
 
@@ -51,10 +53,10 @@ class Basic(commands.Cog, name='Ping/latency'):
         aliases=['_l_']
     )
     async def get_latency(self, ctx):
-        await ctx.send('Latency: `{}ms`'.format(self.bot.latency*1000))
-        with open('latency.csv', 'a') as foo:
-            fooo=csv.writer(foo, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-            fooo.writerow([str(self.bot.latency*1000)])
+        l=self.bot.latency*1000
+        l=truncate(l, 2)
+        await ctx.send('Latency: `{}ms`'.format(l))
+
 
     
 
@@ -72,5 +74,3 @@ class Basic(commands.Cog, name='Ping/latency'):
 
 def setup(bot):
     bot.add_cog(Basic(bot))
-
-
