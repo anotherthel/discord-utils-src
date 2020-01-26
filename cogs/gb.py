@@ -53,7 +53,7 @@ class gb(commands.Cog, name='Good_Bot'):
     )
     async def good_bot(self, ctx, member:discord.Member):
         msg = ctx.message.content.split()
-        if len(msg) == 2:
+        if True:
             for i in range(len(bots)):
                 if bots[i][0] == member.name:
                     bots[i][1] += 1
@@ -61,9 +61,9 @@ class gb(commands.Cog, name='Good_Bot'):
                     print(bots[i])
                     return
             await ctx.send('Bot not found.')
-        if len(msg)>2:
+        if False:
             for i in range(len(bots)):
-                if bots[i][0] == member.name:
+                if bots[i][0] == member.name and int(msg[2])<=10:
                     try:
                         bots[i][1] += int(msg[2])
                         await ctx.send('{} has had a {} point(s) added! {} now has {} points.'.format(member, msg[2], member, bots[i][1]))
@@ -72,6 +72,9 @@ class gb(commands.Cog, name='Good_Bot'):
                     except:
                         await ctx.send('```{}```'.format(sys.exc_info()))
                         return
+                elif int(msg[2]) > 10:
+                    await ctx.send(':x: Error\nMax points given at a time: 10')
+                    return
             await ctx.send('Bot not found.')
 
 
@@ -82,16 +85,16 @@ class gb(commands.Cog, name='Good_Bot'):
     )
     async def badbot(self, ctx, member:discord.Member):
         msg = ctx.message.content.split()
-        if len(msg)==2:
+        if True:
             for i in range(len(bots)):
                 if member.name in bots[i]:
                     bots[i][1] -= 1
                     await ctx.send('{} has lost a point! {} now has {} points.'.format(member, member, bots[i][1]))
                     return
             await ctx.send('Bot not found.')
-        if len(msg)>2:
+        else:
             for i in range(len(bots)):
-                if member.name in bots[i]:
+                if member.name in bots[i] and int(msg[2]) <= 10:
                     try:
                         bots[i][1] -= int(msg[2])
                         await ctx.send('{} has lost {} point(s)! {} now has {} points.'.format(member, msg[2], member, bots[i][1]))
@@ -99,6 +102,9 @@ class gb(commands.Cog, name='Good_Bot'):
                     except:
                         await ctx.send('```{}```'.format(sys.exc_info()))
                         return
+                elif int(msg[2]) > 10:
+                    await ctx.send(':x: Error\nMax points taken at a time: 10')
+                    return
             await ctx.send('Bot not found.')
 
 
@@ -107,6 +113,7 @@ class gb(commands.Cog, name='Good_Bot'):
         description='Add all bots in the server to contest.',
         aliases=['_a']
     )
+    @has_permissions(administrator=True)
     async def add_all(self, ctx):
         msg = await ctx.send('\U0000231b Finding and adding bots...')
         done = 0
@@ -119,11 +126,18 @@ class gb(commands.Cog, name='Good_Bot'):
         await msg.edit(content='\U00002705 Bots successfully added: {}'.format(done))
 
     @commands.command(
-        name='_all_bots',
-        description='View all bots in contest.'
+        name='all_bots',
+        description='View all bots in contest.',
+        aliases=['_a_b']
     )
-    async def _a_(self, ctx):
-        await ctx.send(bots)
+    async def _view(self, ctx):
+        string = ""
+        for i in range(len(bots)):
+            string += "**{}:** {}\n".format(bots[i][0], bots[i][1])
+        embed=discord.Embed(title='All bots', description=string, color=0x000000)
+        await ctx.send(embed=embed)
+
+    
 
         
                     
