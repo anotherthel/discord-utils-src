@@ -60,6 +60,7 @@ class Stuff(commands.Cog, name='Info'):
         await sended.add_reaction(emoji='\U0001f44d')
         await sended.add_reaction(emoji='\U0001f44e')
         await sended.add_reaction(emoji='\U00002699')
+        print(to_dict(sended))
     @commands.command(
         name='serverinfo',
         description='View server info.',
@@ -121,7 +122,7 @@ class Stuff(commands.Cog, name='Info'):
     )
     async def about(self, ctx):
         owner = self.bot.get_user(self.bot.owner_id)
-        embed=discord.Embed(title='About thel vadam likes nothing jr#1359', color=0x000000)
+        embed=discord.Embed(title='About thel vadam likes nothing jr', color=0x000000)
         embed.add_field(name='Purpose:', value='thel vadam likes nothing jr\'s purpose is to be fun discord bot with some basic utility purposes such as kick, ban, etc. He also has some fun/misc features such as getting the binary code for whatever number or char, same with ascii. (tho the unicode part isnt working). thel vadam likes nothing jr is still in beta, so there are probably some bugs. DM his owner if you find any bugs.\nPlaying ut._help for help.', inline=False)
         embed.set_footer(text='Made by {}'.format(owner))
         await ctx.send(embed=embed)
@@ -187,6 +188,7 @@ class Stuff(commands.Cog, name='Info'):
             if module in cogs:
                 embed=discord.Embed(title=module, color=0x000000)
                 comm_list = self.bot.get_cog(cogs[cogs.index(module)]).get_commands()
+                
 
                 text = '```'
 
@@ -212,3 +214,4 @@ class Stuff(commands.Cog, name='Info'):
 
 
 def setup(bot):
+    bot.add_cog(Stuff(bot))
