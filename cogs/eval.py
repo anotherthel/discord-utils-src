@@ -1,5 +1,9 @@
 from discord.ext import commands
-import inspect, pyperclip, discord, time, asyncio
+import inspect, pyperclip, discord, time, asyncio, math
+
+def truncate(number, digits) -> float:
+    stepper = 10.0 ** digits
+    return math.trunc(stepper * number) / stepper
 
 
 class Eval(commands.Cog, name='REPL'):
@@ -46,15 +50,8 @@ class Eval(commands.Cog, name='REPL'):
                 value='```{}```'.format(result),
                 inline=False
             )
-            prof = str(prof)
-            prof = list(prof)
-            print(prof)
-            _prof = ''
-            _prof += prof[0]
-            _prof += prof[1]
-            _prof += prof[2]
-            _prof += prof[3]
-            embed.set_footer(text='That took: {}ms'.format(_prof))
+            prof=truncate(prof, 2)
+            embed.set_footer(text='That took: {}ms'.format(str(prof)))
             await ctx.send(embed=embed)
         else:
             await ctx.send('You can only use this command in the bots home server.')
