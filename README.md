@@ -28,19 +28,5 @@
 And (this time for real) no updates for a while.
 Post an issue if you find any issues.<br/>
 also created owner_only class for owner commands.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
 Oh yeah if you see this, then you now know that the packager files aren't updated.
