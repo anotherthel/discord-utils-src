@@ -1,4 +1,5 @@
 from discord.ext import commands
+import jishaku
 
 class Owner(commands.Cog):
     def __init__(self, bot):
@@ -27,6 +28,37 @@ class Owner(commands.Cog):
                 await ctx.send(':regional_indicator_x: `{}` is not a cog.'.format(msg))
         else:
             return
+
+    @commands.command(
+        name='set_status',
+        description='set bot status (owner only)',
+        aliases=['s_s', '$_$']
+    )
+    async def set_status(self, ctx):
+        if ctx.author.id == 640203987437748246:
+            ctx.message.content = ctx.message.content.split()
+            ctx.message.content.pop(0)
+            msg=' '.join(ctx.message.content)
+            game=discord.Game(msg)
+            await self.bot.change_presence(status=discord.Status.online, activity=game)
+            msg=await ctx.send('Setting status...')
+            await asyncio.sleep(0.75)
+            await msg.edit(content='Status changed to:\nStatus: `discord.Status.online`\nActivity: `{}`'.format(game))
+            await msg.add_reaction(emoji='\U0001f44d')
+            await msg.add_reaction(emoji='\U0001f44e')
+        else:
+            await ctx.send('`set_status` is an owner only command.')
+            return
+
+    @commands.command(
+        name='_jsk',
+        description='(Not real jsk command) jsk command, owner only.'
+    )
+    async def __jsk(self, ctx):
+        await ctx.send('This is not the real jsk command. The real one is owner only.')
+        return
+
+    
 
 def setup(bot):
     bot.add_cog(Owner(bot))
