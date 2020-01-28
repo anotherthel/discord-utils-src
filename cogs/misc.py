@@ -84,6 +84,13 @@ class Misc(commands.Cog, name='Misc/Fun'):
         except discord.ext.commands.errors.CommandOnCooldown as c:
             await ctx.send('@{}, {}'.format(ctx.author, c))
 
+    @commands.command(
+        name='wiki',
+        description='Search wikipedia for something.'
+    )
+    async def search(self, ctx, query: str):
+        await ctx.send('https://en.wikipedia.org/wiki/{}'.format(query.title()))
+
     
 
     @commands.command(
@@ -101,7 +108,7 @@ class Misc(commands.Cog, name='Misc/Fun'):
             ff.pop(0)
             ff.insert(0, '#')
             ff=''.join(ff)
-            embed=discord.Embed(title='Random color:', description='**{}**/**{}**'.format(ff.upper(), c), color=int(x))
+            embed=discord.Embed(title='', description='**{}**'.format(ff.upper()), color=int(x))
             embed.add_field(name='<--', value='*Look to the left to see color, not here!*', inline=False)
             await ctx.send(embed=embed)
         except Exception as e:
@@ -147,26 +154,7 @@ class Misc(commands.Cog, name='Misc/Fun'):
         except Exception as e:
             await ctx.send(f'```{e}```')
 
-    @commands.command(
-        name='set_status',
-        description='set bot status (owner only)',
-        aliases=['s_s', '$_$']
-    )
-    async def set_status(self, ctx):
-        if ctx.author.id == 640203987437748246:
-            ctx.message.content = ctx.message.content.split()
-            ctx.message.content.pop(0)
-            msg=' '.join(ctx.message.content)
-            game=discord.Game(msg)
-            await self.bot.change_presence(status=discord.Status.online, activity=game)
-            msg=await ctx.send('Setting status...')
-            await asyncio.sleep(0.75)
-            await msg.edit(content='Status changed to:\nStatus: `discord.Status.online`\nActivity: `{}`'.format(game))
-            await msg.add_reaction(emoji='\U0001f44d')
-            await msg.add_reaction(emoji='\U0001f44e')
-        else:
-            await ctx.send('`set_status` is an owner only command.')
-            return
+    
 
     @commands.command(
         name='create_channel',
@@ -246,6 +234,8 @@ class Misc(commands.Cog, name='Misc/Fun'):
         text='a sentence in binary'
         msg=text_to_bits(text)
         await ctx.send(msg)
+
+
 
     
 
