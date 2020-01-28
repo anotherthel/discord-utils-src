@@ -3,6 +3,10 @@ from keep_alive import keep_alive
 from discord.utils import get
 import discord, os
 from dotenv import load_dotenv
+import jishaku
+
+def pow_(base, power):
+    return 
 
 load_dotenv()
 token = os.getenv('DISCORD_TOKEN')
@@ -35,6 +39,7 @@ async def on_ready():
     for cog in cogs:
         bot.load_extension(cog)
         print(cog)
+    bot.load_extension("jishaku")
     game=discord.Game('ut.help for help (duh)')
     await bot.change_presence(status=discord.Status.online, activity=game)
     return
