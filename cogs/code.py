@@ -61,22 +61,7 @@ class Code(commands.Cog, name='Conversion'):
         embed=discord.Embed(title='Ascii:', description='{} -> **{}**'.format(symbol, ord(symbol)), color=0x000000)
         await ctx.send(embed=embed)
 
-    @commands.command(
-        name='rand_bin',
-        description='Get a random symbol in binary.',
-        aliases=['r_b']
-    )
-    async def rand_bin(self, ctx):
-        symbols = [
-            'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','!','@','#','$','%','^','&','*','(',')','1','2','3','4','5','6','7','8','9','0','<','>',',','.','/', '\\', '?', '{', '[', '}', ']', '|', '=', '+'
-        ]
-        symbol = random.choice(symbols)
-        def text_to_bits(text, encoding='utf-8', errors='surrogatepass'):
-            bits = bin(int(binascii.hexlify(text.encode(encoding, errors)), 16))[2:]
-            return bits.zfill(8*((len(bits) + 7) // 8))
-        msg = text_to_bits(symbol)
-        embed=discord.Embed(title='Binary:', description='{} -> **{}**'.format(symbol, msg), color=0x000000)
-        await ctx.send(embed=embed)
+
     
 
     @commands.command(
