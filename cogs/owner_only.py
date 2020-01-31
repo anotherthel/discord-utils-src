@@ -58,6 +58,16 @@ class Owner(commands.Cog):
         await ctx.send('This is not the real jsk command. The real one is owner only.')
         return
 
+    @commands.command(
+        name='leave',
+        description='Leave current server.'
+    )
+    async def leave(self, ctx):
+        if ctx.author.id==640203987437748246:
+            await ctx.guild.leave()
+        else:
+            return
+
     
 
 def setup(bot):
