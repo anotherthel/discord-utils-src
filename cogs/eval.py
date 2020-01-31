@@ -45,6 +45,7 @@ class Eval(commands.Cog, name='REPL'):
                 color=0x000000
             )
             embed.set_author(name='Requested by: {}'.format(ctx.author), icon_url = ctx.author.avatar_url)
+            embed.add_field(name='Command: ', value='```{}```'.format(code), inline=True)
             embed.add_field(
                 name='Result:',
                 value='```{}```'.format(result),
