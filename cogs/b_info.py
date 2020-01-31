@@ -51,8 +51,8 @@ class Stuff(commands.Cog, name='Info'):
         l=int(lat)
         l=truncate(l, 2)
         lat=str(l)
-        embed.add_field(name='__Stats__', value='**discord.py version:** {}\n**Avg ping time:** {}ms\n**Websocket latency:** {}ms\n**Num of guilds:** {}\n**Users:** {}\n**Commands:** {}\n**Prefixes:** `ut`, `;;`, `?!`, `ut.`\n**Cooldown:** 5s'.format(discord.__version__,  _time, lat, len(self.bot.guilds), users, commands), inline=True)
-        embed.add_field(name='__Code__', value='**Lines:** 720\n**Files:** 15\n**Cogs:** {}\n**Functions:** 47'.format(len(self.bot.cogs)), inline=True)
+        embed.add_field(name='__Stats__', value='**Avg ping time:** {}ms\n**Websocket latency:** {}ms\n**Num of guilds:** {}\n**Users:** {}\n**Commands:** {}\n**Cooldown:** 5s'.format(_time, lat, len(self.bot.guilds), users, commands), inline=True)
+        embed.add_field(name='__Code__', value='**discord.py version:** {}\n**Lines:** >720\n**Files:** >15\n**Cogs:** {}\n**Functions:** >47'.format(discord.__version__, len(self.bot.cogs)), inline=True)
         embed.add_field(name='__Created by:__', value=user, inline=False)
         embed.add_field(name='Links:', value='[**invite**](https://discordapp.com/api/oauth2/authorize?client_id=665674407611727915&permissions=8&scope=bot)  **|** [**source**](https://github.com/insert-ctrl/discord-utils-src)', inline=False)
         embed.set_footer(text='ID: {} | Made by {} | Made using repl.it | Playing uthelp'.format(self.bot.user.id, user))
@@ -60,7 +60,6 @@ class Stuff(commands.Cog, name='Info'):
         await sended.add_reaction(emoji='\U0001f44d')
         await sended.add_reaction(emoji='\U0001f44e')
         await sended.add_reaction(emoji='\U00002699')
-        print(to_dict(sended))
     @commands.command(
         name='serverinfo',
         description='View server info.',
