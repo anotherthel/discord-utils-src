@@ -1,24 +1,36 @@
+"""bunch ok imports"""
 from discord.ext import commands
 import discord, time, csv, discord.utils, math
 
-
+# truncate function, trim decimals
 def truncate(number, digits) -> float:
     stepper = 10.0 ** digits
     return math.trunc(stepper * number) / stepper
 
 
-class Stuff(commands.Cog, name='Info'):
-    def __init__(self, bot):
+
+"""
+All commands: 
+@commands.command( -> this is at a command, ie the prefix was used
+    name='text', (if this name was called), mandataory
+    description='more text', optional, help description
+    aliases=[] also optional, all aliases, (must be list)
+async def function(self, ctx, *): self, as in class, ctx (message class)
+    etc
+"""
+# cog class
+class Stuff(commands.Cog, name='Info'):# set name to info
+    def __init__(self, bot):# __init__
         self.bot=bot
 
-    @commands.command(
+    @commands.command(# command 'info'
         name='info',
         description='Shows info on bot.',
         aliases=['ii']
     )
-    async def testing(self, ctx):
-        user = self.bot.get_user(self.bot.owner_id)
-        x=open('times.csv')
+    async def testing(self, ctx):# idk why this function is called 'testing()'
+        user = self.bot.get_user(self.bot.owner_id)# just get my name
+        x=open('times.csv')# get ping avarage that s the next 15 lines or so
         xx=csv.reader(x)
         xxx=list(xx)
         all_times = 0
@@ -33,7 +45,7 @@ class Stuff(commands.Cog, name='Info'):
         for i in range(len(time)-4):
             time.pop()
         _time = ''.join(time)
-        embed=discord.Embed(title='', color=0x000000)
+        embed=discord.Embed(title='', color=0x000000)# the info embed so yeah
         url=self.bot.user.avatar_url
         user = self.bot.get_user(665674407611727915)
         embed.set_author(
@@ -50,7 +62,7 @@ class Stuff(commands.Cog, name='Info'):
         lat = self.bot.latency*1000
         l=int(lat)
         l=truncate(l, 2)
-        lat=str(l)
+        lat=str(l)# lots of fields
         embed.add_field(name='__Stats__', value='**Avg ping time:** {}ms\n**Websocket latency:** {}ms\n**Num of guilds:** {}\n**Users:** {}\n**Commands:** {}\n**Cooldown:** 5s'.format(_time, lat, len(self.bot.guilds), users, commands), inline=True)
         embed.add_field(name='__Code__', value='**discord.py version:** {}\n**Lines:** >720\n**Files:** >15\n**Cogs:** {}\n**Functions:** >47'.format(discord.__version__, len(self.bot.cogs)), inline=True)
         embed.add_field(name='__Created by:__', value=user, inline=False)
@@ -60,7 +72,7 @@ class Stuff(commands.Cog, name='Info'):
         await sended.add_reaction(emoji='\U0001f44d')
         await sended.add_reaction(emoji='\U0001f44e')
         await sended.add_reaction(emoji='\U00002699')
-    @commands.command(
+    @commands.command(# serverinfo command
         name='serverinfo',
         description='View server info.',
         aliases=['server', 'guild']
