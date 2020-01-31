@@ -88,8 +88,15 @@ class Misc(commands.Cog, name='Misc/Fun'):
         name='wiki',
         description='Search wikipedia for something.'
     )
-    async def search(self, ctx, query: str):
-        await ctx.send('https://en.wikipedia.org/wiki/{}'.format(query.title()))
+    async def search(self, ctx):
+        if len(ctx.message.content.split())>1:
+            msg=ctx.message.content.split()
+            msg.pop(0)
+            msg='_'.join(msg)
+            #print(msg)
+            await ctx.send('https://en.wikipedia.org/wiki/{}'.format(msg.title()))
+        else:
+            await ctx.send(':regional_indicator_x: Something went wrong.\nProper format: ut.wiki <query>')
 
     
 
@@ -108,7 +115,7 @@ class Misc(commands.Cog, name='Misc/Fun'):
             ff.pop(0)
             ff.insert(0, '#')
             ff=''.join(ff)
-            embed=discord.Embed(title='', description='**{}**'.format(ff.upper()), color=int(x))
+            embed=discord.Embed(title='', description='**{}**'.format(ff), color=int(x))
             embed.add_field(name='<--', value='*Look to the left to see color, not here!*', inline=False)
             await ctx.send(embed=embed)
         except Exception as e:
